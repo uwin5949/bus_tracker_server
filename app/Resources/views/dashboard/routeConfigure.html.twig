@@ -1,0 +1,223 @@
+{% extends 'dashboard/base.html.twig' %}
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-10">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <div class="text-center">
+                        <h3>Route Configure</h3>
+                    </div>
+                </div>
+                <form method="post" enctype="multipart/form-data">
+                    {% if errors is not empty %}
+                        <div class="alert alert-danger alert-tastyy">
+                            <label>{{ errors }}</label>
+                        </div>
+                    {% endif %}
+                    <div class="box-body">
+                        {{ form_start(form) }}
+
+                        <div class="row">
+                            <div class="col-md-2 col-lg-2 col-xl-2 col-xs-4 hidden-xs" style="padding-right: 70px;padding-top: 5px; padding-bottom: 10px">
+                                <h2 class="panel-title" style="margin: 0px !important;">
+                                    {{ form_label(form.routeName) }}
+                                </h2>
+                            </div>
+                            <div class="col-md-5 col-lg-5 col-xl-5 col-xs-4" style="padding-right: 0px; padding-bottom: 10px">
+                                <div class="form-group">
+                                    {{ form_widget(form.routeName, { 'attr': {'class': 'form-control','placeholder':'Route Name'} }) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 col-lg-2 col-xl-2 col-xs-4 hidden-xs" style="padding-right: 70px;padding-top: 5px; padding-bottom: 10px">
+                                <h2 class="panel-title" style="margin: 0px !important;">
+                                    {{ form_label(form.routeNo) }}
+                                </h2>
+                            </div>
+                            <div class="col-md-5 col-lg-5 col-xl-5 col-xs-4" style="padding-right: 0px; padding-bottom: 10px">
+                                <div class="form-group">
+                                    {{ form_widget(form.routeNo, { 'attr': {'class': 'form-control','placeholder':'Route Number'} }) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-2 col-lg-2 col-xl-2 col-xs-4 hidden-xs" style="padding-right: 70px;padding-top: 5px; padding-bottom: 10px">
+                                <h2 class="panel-title" style="margin: 0px !important;">
+                                    <label class="col-sm-2 control-label required" for="route_routeNo">Published</label>
+                                </h2>
+                            </div>
+                            <div class="col-md-5 col-lg-5 col-xl-5 col-xs-4" style="padding-right: 0px; padding-bottom: 10px">
+                                <div class="form-group">
+                                    {{ form_widget(form.published) }}
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div id="coordinates" data-prototype="{{ form_widget(form.coordinates.vars.prototype)|e('html_attr') }}">
+                                <h4>Route Coordinates</h4>
+                                <table class="table">
+                                    <thead>
+                                    <th>Latitude</th>
+                                    <th>Longitude</th>
+                                    </thead>
+                                    <tbody>
+                                    {% for coordinate in form.coordinates %}
+                                        <tr>
+                                            <td>
+                                                <div class="form-group latCell">
+                                                    <div class="col-sm-10">
+                                                        {{ form_errors(coordinate.lat) }}
+                                                        {{ form_widget(coordinate.lat) }}
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="form-group longCell">
+                                                    <div class="col-sm-10">
+                                                        {{ form_errors(coordinate.long) }}
+                                                        {{ form_widget(coordinate.long) }}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="box-footer" style="text-align: right">
+                        <a class="btn btn-default" href="{{ url('dashboard_home') }}">Cancel</a>
+                        {{ form_widget(form.save,{ 'attr': {'class': 'btn btn-success'}}) }}
+                        {{ form_end(form) }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/template" class="row-1">
+        {#    <tr>
+                <td class="col-md-4">
+                    <select required class="form-control device" name="devices[]">
+                        <option>Select</option>
+                    </select>
+                </td>
+                <td class="col-md-4">
+                    <div>
+                        <input required class="form-control property" name="property[]">
+                    </div>
+                </td>
+                <td style="vertical-align: middle"><button class="btn btn-danger remove-button"><i class="glyphicon glyphicon-trash"></i></button></td>
+            </tr>#}
+    </script>
+    <script type="text/javascript">
+
+
+        var $collectionHolder;
+        var $filterPrototype;
+
+        // setup an "add a tag" link
+        var $addFilterButton = $('<button class="add_filter_link btn btn-default" style="margin-left: 10px">Add Coordinate</button>');
+        var $newButton = $('<div></div>').append($addFilterButton);
+
+        jQuery(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('#coordinates');
+
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newButton);
+
+
+            var tbody = $('#coordinates').find('tbody');
+            $(tbody).find('tr').each(function(key,tr){
+                addDeleteTag(tr);
+            });
+
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addFilterButton.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder);
+                //set filter devices
+//                updateFilterDevices();
+            });
+        });
+
+        function addTagForm($collectionHolder) {
+            // Get the data-prototype explained earlier
+
+
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+//            var $newFormLi = $('<div></div>').append(newForm);
+
+
+            var tbody = $('#coordinates').find('tbody');
+            var formGroups = $(newForm).find('.form-group');
+            var tr=$('<tr></tr>');
+            $.each(formGroups,function(index,value){
+                if(index%2==0){
+                    var str=$('<div class="form-group latCell"></div>').append(value.innerHTML);
+                }else{
+                    var str=$('<div class="form-group latCell"></div>').append(value.innerHTML);
+                }
+                $(str).find('label').remove();
+                var td=$('<td></td>').append(str);
+                tr.append(td);
+            });
+
+            addDeleteTag(tr);
+
+            $(tbody).append(tr);
+
+        }
+        function addDeleteTag(tr) {
+            var removeLink = $('<a href="#">Delete</a>');
+            var removeTD = $('<td style="text-align: center"></td>').append(removeLink);
+            $(tr).append(removeTD);
+
+            removeLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+                // remove the li for the tag form
+                tr.remove();
+            });
+        }
+
+    </script>
+
+
+{% endblock %}
