@@ -59,6 +59,7 @@ class AppAPIController extends BaseController
                     $stdBus->ownerType=$buses[$i]->getOwnerType()->getMetacode();
                     $stdBus->busType=$buses[$i]->getBusType()->getMetacode();
                     $stdBus->username=$buses[$i]->getUser()->getUsername();
+                    $stdBus->route_id=$buses[$i]->getRoute()->getId();
                     array_push($stdBuses,$stdBus);
                 }
 
