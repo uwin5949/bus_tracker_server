@@ -10,4 +10,6 @@ namespace AppBundle\Repository;
  */
 class RouteRepository extends \Doctrine\ORM\EntityRepository
 {
+
+
 }
