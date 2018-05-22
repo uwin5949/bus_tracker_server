@@ -55,14 +55,41 @@ class AppAPIController extends BaseController
                     $stdBus=new \stdClass();
                     $stdBus->name=$buses[$i]->getBusName();
                     $stdBus->id=$buses[$i]->getId();
-                    $stdBus->routeNo=$buses[$i]->getBusNo();
+                    $stdBus->busNo=$buses[$i]->getBusNo();
                     $stdBus->ownerType=$buses[$i]->getOwnerType()->getMetacode();
                     $stdBus->busType=$buses[$i]->getBusType()->getMetacode();
+                    $stdBus->username=$buses[$i]->getUser()->getUsername();
                     array_push($stdBuses,$stdBus);
                 }
 
 
             return new Response(json_encode($stdBuses));
+        }
+        else{
+            return null;
+        }
+
+    }
+
+    /**
+     * @Route("/api/coordinate/list", name="coordinate_list_api")
+     */
+    public function coordinateListAPIAction(Request $request){
+        if($request->getMethod() == 'POST'){
+            $route_id = $request->get('route_id');
+            $route=$this->getRepository('RoadRoute')->findOneBy(array('published'=>true,'id'=>$route_id));
+            $coordinates=$this->getRepository('RouteCoordinate')->findBy(array('route'=>$route));
+            $stdCoordinates=array();
+            for($i=0;$i<count($coordinates);$i++){
+                $stdCoordinate=new \stdClass();
+                $stdCoordinate->id=$i+1;
+                $stdCoordinate->lat=$coordinates[$i]->getLat();
+                $stdCoordinate->long=$coordinates[$i]->getLong();
+                array_push($stdCoordinates,$stdCoordinate);
+            }
+
+
+            return new Response(json_encode($stdCoordinates));
         }
         else{
             return null;
