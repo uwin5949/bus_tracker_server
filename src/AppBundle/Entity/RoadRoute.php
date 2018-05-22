@@ -38,6 +38,12 @@ class RoadRoute
     /**
      * @var string
      *
+     */
+    private $showName;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="published", type="boolean" , nullable=false)
      */
     private $published;
@@ -174,4 +180,15 @@ class RoadRoute
     {
         return $this->coordinates;
     }
+
+    /**
+     * Get showName
+     *
+     * @return string
+     */
+    public function getShowName()
+    {
+        return $this->routeNo.': '.$this->routeName;
+    }
+
 }

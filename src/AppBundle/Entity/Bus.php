@@ -53,17 +53,11 @@ class Bus
     /**
      * One Bus has a User
      *
-     * @ORM\ManyToOne(targetEntity="Bus")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user", referencedColumnName="id")
      */
     private $user;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="status", type="boolean" , nullable=false)
-     */
-    private $status;
 
     /**
      * @var string
@@ -71,6 +65,22 @@ class Bus
      * @ORM\Column(name="published", type="boolean" , nullable=false)
      */
     private $published;
+
+    /**
+     * One Bus has a BusType
+     *
+     * @ORM\ManyToOne(targetEntity="BusType")
+     * @ORM\JoinColumn(name="busType", referencedColumnName="id")
+     */
+    private $busType;
+
+    /**
+     * One Bus has a OwnerType
+     *
+     * @ORM\ManyToOne(targetEntity="OwnerType")
+     * @ORM\JoinColumn(name="ownerType", referencedColumnName="id")
+     */
+    private $ownerType;
 
 
 
@@ -207,29 +217,6 @@ class Bus
         return $this->user;
     }
 
-    /**
-     * Set status
-     *
-     * @param boolean $status
-     *
-     * @return Bus
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return boolean
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
 
     /**
      * Set published
@@ -253,5 +240,53 @@ class Bus
     public function getPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * Set busType
+     *
+     * @param \AppBundle\Entity\BusType $busType
+     *
+     * @return Bus
+     */
+    public function setBusType(\AppBundle\Entity\BusType $busType = null)
+    {
+        $this->busType = $busType;
+
+        return $this;
+    }
+
+    /**
+     * Get busType
+     *
+     * @return \AppBundle\Entity\BusType
+     */
+    public function getBusType()
+    {
+        return $this->busType;
+    }
+
+    /**
+     * Set ownerType
+     *
+     * @param \AppBundle\Entity\OwnerType $ownerType
+     *
+     * @return Bus
+     */
+    public function setOwnerType(\AppBundle\Entity\OwnerType $ownerType = null)
+    {
+        $this->ownerType = $ownerType;
+
+        return $this;
+    }
+
+    /**
+     * Get ownerType
+     *
+     * @return \AppBundle\Entity\OwnerType
+     */
+    public function getOwnerType()
+    {
+        return $this->ownerType;
     }
 }
