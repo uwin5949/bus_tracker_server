@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="bus")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BusRepository")
+ * @UniqueEntity("busNo")
  */
 class Bus
 {
@@ -31,16 +32,23 @@ class Bus
     /**
      * @var string
      *
-     * @ORM\Column(name="bus_no", type="string", length=10)
+     * @ORM\Column(name="bus_no", type="string", length=10, unique=true)
      */
     private $busNo;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="last_loc", type="string", length=100 ,nullable=true)
+     * @ORM\Column(name="last_lat", type="string", length=20 ,nullable=true)
      */
     private $lastLoc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="last_long", type="string", length=20 ,nullable=true)
+     */
+    private $lastLong;
 
     /**
      * One Bus has a RoadRoute
@@ -65,6 +73,15 @@ class Bus
      * @ORM\Column(name="published", type="boolean" , nullable=false)
      */
     private $published;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="isConnected", type="boolean" , nullable=true)
+     */
+    private $isConnected;
+
+
 
     /**
      * One Bus has a BusType
@@ -288,5 +305,53 @@ class Bus
     public function getOwnerType()
     {
         return $this->ownerType;
+    }
+
+    /**
+     * Set isConnected
+     *
+     * @param boolean $isConnected
+     *
+     * @return Bus
+     */
+    public function setIsConnected($isConnected)
+    {
+        $this->isConnected = $isConnected;
+
+        return $this;
+    }
+
+    /**
+     * Get isConnected
+     *
+     * @return boolean
+     */
+    public function getIsConnected()
+    {
+        return $this->isConnected;
+    }
+
+    /**
+     * Set lastLong
+     *
+     * @param string $lastLong
+     *
+     * @return Bus
+     */
+    public function setLastLong($lastLong)
+    {
+        $this->lastLong = $lastLong;
+
+        return $this;
+    }
+
+    /**
+     * Get lastLong
+     *
+     * @return string
+     */
+    public function getLastLong()
+    {
+        return $this->lastLong;
     }
 }
