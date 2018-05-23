@@ -83,9 +83,8 @@ class AppAPIController extends BaseController
             $stdCoordinates=array();
             for($i=0;$i<count($coordinates);$i++){
                 $stdCoordinate=new \stdClass();
-                $stdCoordinate->id=$i+1;
-                $stdCoordinate->lat=$coordinates[$i]->getLat();
-                $stdCoordinate->long=$coordinates[$i]->getLong();
+                $stdCoordinate->lat= (float) $coordinates[$i]->getLat();
+                $stdCoordinate->lng= (float) $coordinates[$i]->getLong();
                 array_push($stdCoordinates,$stdCoordinate);
             }
 
