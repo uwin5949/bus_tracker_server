@@ -21,9 +21,8 @@ class DriverAPIController extends BaseController
      */
     public function driverLoginAction(Request $request){
         if($request->getMethod() == 'POST'){
-            $json_data=json_decode($request->getContent());
-            $username=$json_data->username;
-            $password = $json_data->password;
+            $username=$request->get('username');
+            $password = $request->get('password');
             $user = null;
             $stdResponse=new \stdClass();
             $stdResponse->status=400;
@@ -33,6 +32,14 @@ class DriverAPIController extends BaseController
                 $encoder = $this->container->get('security.password_encoder');
                 if($encoder->isPasswordValid($user, $password)){
                     $stdResponse->status=200;
+                    $bus = $this->getRepository('Bus')->findOneBy(array('user'=>$user));
+                    $stdResponse->busNo = $bus->getBusNo();
+                    $stdResponse->busId = $bus->getId();
+                    $stdResponse->username = $user->getUsername();
+                    $stdResponse->route_id = $bus->getRoute()->getId();
+                    $stdResponse->routeNo = $bus->getRoute()->getRouteNo();
+                    $stdResponse->routeName = $bus->getRoute()->getRouteName();
+
                 }
             }
             return new Response(json_encode($stdResponse));
