@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller;
 
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,20 +27,61 @@ class DriverAPIController extends BaseController
             $user = null;
             $stdResponse=new \stdClass();
             $stdResponse->status=400;
-            $driver_role = $this->getRepository('Role')->findOneBy(array('metacode'=>'ROLE_DRIVER'));
-            $user = $this->getRepository('User')->findOneBy(array('username'=>$username,'role'=>$driver_role));
-            if($user != null){
+            $user = $this->getRepository('User')->findOneBy(array('username'=>$username));
+            if($user != null && $user->getRole()->getMetacode()!='ROLE_ADMIN' && !$user->getLogged()) {
                 $encoder = $this->container->get('security.password_encoder');
-                if($encoder->isPasswordValid($user, $password)){
-                    $stdResponse->status=200;
-                    $bus = $this->getRepository('Bus')->findOneBy(array('user'=>$user));
-                    $stdResponse->busNo = $bus->getBusNo();
-                    $stdResponse->busId = $bus->getId();
+                if ($encoder->isPasswordValid($user, $password)) {
+                    $user->setLogged(true);
+                    $em = $this->getEntityManager();
+                    $em->persist($user);
+                    $em->flush();
+                    $driver_role = $user->getRole()->getMetacode();
+                    $stdResponse->status = 200;
+                    $stdResponse->driverRole = $driver_role;
                     $stdResponse->username = $user->getUsername();
-                    $stdResponse->route_id = $bus->getRoute()->getId();
-                    $stdResponse->routeNo = $bus->getRoute()->getRouteNo();
-                    $stdResponse->routeName = $bus->getRoute()->getRouteName();
+                    if ($driver_role == 'ROLE_DRIVER') {
+                        $train = $this->getRepository('Train')->findOneBy(array('user' => $user));
+                        $stdResponse->trainName = $train->getTrainName();
+                        $stdResponse->trainId = $train->getId();
 
+                        $startStation = new \stdClass();
+                        $startStation->name = $train->getStartStation()->getName();
+                        $startStation->id = $train->getStartStation()->getId();
+                        $stdResponse->startStation = $startStation;
+
+                        $endStation = new \stdClass();
+                        $endStation->name = $train->getEndStation()->getName();
+                        $endStation->id = $train->getEndStation()->getId();
+                        $stdResponse->endStation = $endStation;
+
+                        $trainLines = $train->getTrainLines();
+                        $lineArray = [];
+                        foreach ($trainLines as $line) {
+                            $stdLine = new \stdClass();
+                            $stdLine->name = $line->getName();
+                            $stdLine->metacode = $line->getMetacode();
+                            array_push($lineArray, $stdLine);
+                        }
+                        $stdResponse->trainLines = $lineArray;
+                        $available_days = $train->getAvailableDays();
+                        $availableDays = [];
+                        foreach ($available_days as $day) {
+                            $stdDay = new \stdClass();
+                            $stdDay->name = $day->getDayName();
+                            $stdDay->metacode = $day->getMetacode();
+                            array_push($availableDays, $stdDay);
+                        }
+                        $stdResponse->availableDays = $availableDays;
+
+                    }
+                    elseif ($driver_role == 'ROLE_DRIVER_TRAIN'){
+                        $bus = $this->getRepository('Bus')->findOneBy(array('user'=>$user));
+                        $stdResponse->busNo = $bus->getBusNo();
+                        $stdResponse->busId = $bus->getId();
+                        $stdResponse->route_id = $bus->getRoute()->getId();
+                        $stdResponse->routeNo = $bus->getRoute()->getRouteNo();
+                        $stdResponse->routeName = $bus->getRoute()->getRouteName();
+                    }
                 }
             }
             return new Response(json_encode($stdResponse));
@@ -48,6 +90,37 @@ class DriverAPIController extends BaseController
             return null;
         }
 
+
+
+    }
+
+
+    /**
+     * @Route("/driver/api/logout", name="driver_logout_api")
+     */
+    public function driverLogoutAction(Request $request){
+        if($request->getMethod() == 'POST'){
+            $username=$request->get('username');
+            $password = $request->get('password');
+            $user = null;
+            $stdResponse=new \stdClass();
+            $stdResponse->status=400;
+            $user = $this->getRepository('User')->findOneBy(array('username'=>$username));
+            if($user != null && $user->getRole()->getMetacode()!='ROLE_ADMIN' && $user->getLogged()) {
+                $encoder = $this->container->get('security.password_encoder');
+                if ($encoder->isPasswordValid($user, $password)) {
+                    $user->setLogged(false);
+                    $stdResponse->status = 200;
+                    $em = $this->getEntityManager();
+                    $em->persist($user);
+                    $em->flush();
+                }
+            }
+            return new Response(json_encode($stdResponse));
+        }
+        else{
+            return null;
+        }
 
 
     }

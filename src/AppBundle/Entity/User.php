@@ -39,6 +39,13 @@ class User extends BaseUser
      */
     private $role;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="logged", type="boolean" , nullable=true)
+     */
+    private $logged=false;
+
 
 
 
@@ -117,5 +124,29 @@ class User extends BaseUser
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * Set logged
+     *
+     * @param boolean $logged
+     *
+     * @return User
+     */
+    public function setLogged($logged)
+    {
+        $this->logged = $logged;
+
+        return $this;
+    }
+
+    /**
+     * Get logged
+     *
+     * @return boolean
+     */
+    public function getLogged()
+    {
+        return $this->logged;
     }
 }

@@ -38,8 +38,6 @@ class AppAPIController extends BaseController
             return null;
         }
 
-
-
     }
 
     /**
@@ -98,5 +96,40 @@ class AppAPIController extends BaseController
 
 
     }
+
+
+    /**
+     * @Route("/api/train/list", name="train_list_api")
+     */
+    public function trainListAPIAction(Request $request){
+        if($request->getMethod() == 'POST'){
+            $line = $request->get('line');
+            $trainLine=$this->getRepository('TrainLine')->findOneBy(array('metacode'=>$line));
+            $trains=$this->getRepository('Train')->findTrainsOfLine($trainLine);
+            $stdTrains=array();
+            for($i=0;$i<count($trains);$i++){
+                $stdTrain=new \stdClass();
+                $stdTrain->id=$trains[$i]->getId();
+                $stdTrain->name=$trains[$i]->getTrainName();
+                $stdTrain->startStation = $trains[$i]->getStartStation()->getName();
+                $stdTrain->endStation = $trains[$i]->getEndStation()->getName();
+                $stdTrain->startTime = $trains[$i]->getStartTime()->format('H:i');
+                $stdTrain->endTime = $trains[$i]->getEndTime()->format('H:i');
+                $stdTrain->username = $trains[$i]->getUser()->getUsername();
+                array_push($stdTrains,$stdTrain);
+
+
+            }
+
+
+            return new Response(json_encode($stdTrains));
+        }
+        else{
+            return null;
+        }
+
+    }
+
+
 
 }

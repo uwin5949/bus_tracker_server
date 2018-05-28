@@ -1,0 +1,49 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <div class="text-center">
+                        <h3>Train Line List</h3>
+                    </div>
+                </div>
+
+                <div class="box-body">
+
+                    <div class="row" id="data_row">
+                        <table class="table">
+                            <thead>
+                            <tr>
+
+                                <th>Line Name</th>
+                                <th>Metacode</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for trainLine in trainLines %}
+                                <tr>
+                                    <td>{{ trainLine.getName() }}</td>
+                                    <td>{{ trainLine.getMetacode() }}</td>
+                                </tr>
+                            {%endfor%}
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+
+                </div>
+                <div class="box-footer" style="text-align: right">
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

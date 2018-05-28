@@ -37,28 +37,37 @@ class RouteController extends BaseController
             $route=new RoadRoute();
             $isEdit=false;
         }
-        $originalCoordinates = new ArrayCollection();
 
-        foreach ($route->getCoordinates() as $coordinate) {
-            $originalCoordinates->add($coordinate);
+        if(!$isEdit){
+            $originalCoordinates = new ArrayCollection();
+
+            foreach ($route->getCoordinates() as $coordinate) {
+                $originalCoordinates->add($coordinate);
+            }
+            $tempCoordinate = new RouteCoordinate();
+            $route->addCoordinate($tempCoordinate);
         }
-        $tempCoordinate = new RouteCoordinate();
-        $route->addCoordinate($tempCoordinate);
+
 
         $form = $this->createForm(RouteType::class, $route);
+        if($isEdit){
+            $form->remove('coordinates');
+        }
         $form->handleRequest($request);
         $errors = $form->getErrors();
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getEntityManager();
-
-            foreach ($originalCoordinates as $coordinate) {
-                if (false === $route->getCoordinates()->contains($coordinate)) {
-                    $em->remove($coordinate);
+            if(!$isEdit){
+                foreach ($originalCoordinates as $coordinate) {
+                    if (false === $route->getCoordinates()->contains($coordinate)) {
+                        $em->remove($coordinate);
+                    }
+                }
+                foreach ($route->getCoordinates() as $coordinate) {
+                    $coordinate->setRoute($route);
                 }
             }
-            foreach ($route->getCoordinates() as $coordinate) {
-                $coordinate->setRoute($route);
-            }
+
             $em->persist($route);
             $em->flush();
             if($isEdit){

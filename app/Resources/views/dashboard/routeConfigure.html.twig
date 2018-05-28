@@ -58,7 +58,7 @@
                             </div>
                         </div>
 
-
+                        {% if not isEdit %}
                         <div class="row">
                             <div id="coordinates" data-prototype="{{ form_widget(form.coordinates.vars.prototype)|e('html_attr') }}">
                                 <h4>Route Coordinates</h4>
@@ -93,6 +93,16 @@
                                 </table>
                             </div>
                         </div>
+                        {% endif %}
+                        {% if isEdit %}
+                            <div class="row">
+                                <div id="map">
+
+
+                                </div>
+                            </div>
+                        {% endif %}
+
 
 
                     </div>
@@ -109,6 +119,18 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script>
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: -34.397, lng: 150.644},
+                zoom: 8
+            });
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEWq_OrLVXlWlnQBkFL2bOALHNrkU9_kM&callback=initMap"
+            async defer></script>
 
     <script type="text/template" class="row-1">
         {#    <tr>

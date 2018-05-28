@@ -41,8 +41,7 @@ class BusController extends BaseController
             $isEdit=true;
         }
         if($bus==null){
-            $bus=new Bus();
-            $isEdit=false;
+            return null;
         }
         $form = $this->createForm(BusType::class, $bus);
         $form->handleRequest($request);
@@ -107,9 +106,10 @@ class BusController extends BaseController
         $buses = $this->getRepository('Bus')->findBy(array('route'=>$routes[0]));
 
 
-        return $this->render('Dashboard/DeviceType/view_device_type_list.html.twig', array(
+        return $this->render('dashboard/busList.html.twig', array(
             'buses' => $buses,
-            'routes'=>$routes
+            'routes'=>$routes,
+            'heading' => 'Bus List',
         ));
     }
 

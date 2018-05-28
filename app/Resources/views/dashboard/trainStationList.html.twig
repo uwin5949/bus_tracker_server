@@ -1,0 +1,54 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <div class="text-center">
+                        <h3>Train Station List</h3>
+                    </div>
+                </div>
+
+                <div class="box-body">
+
+                    <div class="row" id="data_row">
+                        <table class="table">
+                            <thead>
+                            <tr>
+
+                                <th>Station Name</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for trainStation in pagination %}
+                                <tr>
+                                    <td>{{ trainStation.getName() }}</td>
+                                    <td><a  type="button"  class="btn btn-success" href="{{ url('dashboard_trainStation_configure',{'id':trainStation.getId()}) }}"><span class="glyphicon glyphicon-list-alt"></span> Edit</a></td>
+                                </tr>
+                            {%endfor%}
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+
+                </div>
+                <div class="box-footer" style="text-align: right">
+                    <nav aria-label="Page navigation">
+                        <div class="pagination" >
+                            {{ knp_pagination_render(pagination) }}
+                        </div>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

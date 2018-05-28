@@ -154,20 +154,6 @@
                 {#<li><a href="{{ url('homepage') }}"><i class="fa fa-image"></i><span>Main Slider Images</span></a></li>#}
                 {#<li><a href="{{ url('homepage') }}"><i class="fa fa-camera-retro"></i><span>Homepage Gallery Images</span></a></li>#}
 
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-road"></i><span>Routes</span>
-                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li>
-                            <a href="{{ url('dashboard_route_configure') }}"><i class="fa fa-plus"></i>Add New Route</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('homepage') }}"><i class="fa fa-bars"></i>Browse Routes</a>
-                        </li>
-
-                    </ul>
-                </li>
 
                 <li class="treeview">
                     <a href="#"><i class="fa fa-bus"></i><span>Buses</span>
@@ -180,6 +166,41 @@
                         <li>
                         <a href="{{ url('homepage') }}"><i class="fa fa-bars"></i>Browse Buses</a>
                         </li>
+
+                        <li>
+                            <a href="{{ url('dashboard_route_configure') }}"><i class="fa fa-plus"></i>Add New Route</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('homepage') }}"><i class="fa fa-bars"></i>Browse Routes</a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-train"></i><span>Trains</span>
+                        <span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="{{ url('dashboard_train_configure') }}"><i class="fa fa-plus"></i>Add New Train</a>
+                        </li>
+                        <li>
+                            <a href="{{ url('dashboard_view_train_list') }}"><i class="fa fa-bars"></i>Browse Trains</a>
+                        </li>
+
+                        <li>
+                            <a href="{{ url('dashboard_view_trainLine_list') }}"><i class="fa fa-bars"></i>Browse Train Lines</a>
+                        </li>
+
+                        <li>
+                            <a href="{{ url('dashboard_trainStation_configure') }}"><i class="fa fa-plus"></i>Add New Train Station</a>
+                        </li>
+
+                        <li>
+                            <a href="{{ url('dashboard_view_trainStation_list') }}"><i class="fa fa-bars"></i>Browse Train Station</a>
+                        </li>
+
 
                     </ul>
                 </li>
