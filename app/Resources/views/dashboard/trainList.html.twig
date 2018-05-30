@@ -38,6 +38,7 @@
                                 <th>End Station</th>
                                 <th>Start Time</th>
                                 <th>End Time</th>
+                                <th>Connection Status</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -49,6 +50,11 @@
                                     <td>{{ train.endStation.name }}</td>
                                     <td>{{ train.getStartTime().format('H:i') }}</td>
                                     <td>{{ train.getEndTime().format('H:i') }}</td>
+                                    {% if train.getUser().getIsConnected() %}
+                                        <td><span class="label label-success">Connected</span></td>
+                                    {% else %}
+                                        <td><span class="label label-danger">Disconnected</span></td>
+                                    {% endif %}
                                     <td><a  type="button"  class="btn btn-success" href="{{ url('dashboard_train_configure',{'id':train.getId()}) }}"><span class="glyphicon glyphicon-list-alt"></span> Edit</a></td>
                                 </tr>
                             {%endfor%}
@@ -89,11 +95,11 @@
                 success : function(response)
                 {
 //                    $('.loader').hide();
-                    var innerHtml='<table class="table"> <thead><tr><th>Name</th><th>Start Station</th><th>End Station</th><th>Start Time</th><th>End Time</th><th></th></tr></thead><tbody>';
+                    var innerHtml='<table class="table"> <thead><tr><th>Name</th><th>Start Station</th><th>End Station</th><th>Start Time</th><th>End Time</th><th>Connection Status</th><th></th></tr></thead><tbody>';
 
                     for(var i=0;i<response.length;i++){
                         innerHtml=innerHtml+'<tr>';
-                        innerHtml=innerHtml+'<td>'+response[i].name+'</td>'+'<td>'+response[i].startStation+'</td>'+'<td>'+response[i].endStation+'</td>'+'<td>'+response[i].startTime+'</td>'+'<td>'+response[i].endTime+'</td>';
+                        innerHtml=innerHtml+'<td>'+response[i].name+'</td>'+'<td>'+response[i].startStation+'</td>'+'<td>'+response[i].endStation+'</td>'+'<td>'+response[i].startTime+'</td>'+'<td>'+response[i].endTime+'</td>'+'<td>'+response[i].connected+'</td>';
 
                         innerHtml=innerHtml+'<td><a type="button" class="btn btn-success" href="PLACEHO##LDER"><span class="glyphicon glyphicon-list-alt"></span> Edit</a></td>';
 

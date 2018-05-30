@@ -35,7 +35,7 @@
 
                                 <th>bus No</th>
                                 <th>Name</th>
-                                <th>Published</th>
+                                <th>Connection Status</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -49,10 +49,10 @@
                                         <td>-</td>
                                     {% endif %}
 
-                                    {% if bus.published %}
-                                        <td><span class="label label-success">Published</span></td>
+                                    {% if bus.getUser().getIsConnected() %}
+                                        <td><span class="label label-success">Connected</span></td>
                                     {% else %}
-                                        <td><span class="label label-success">Unpublished</span></td>
+                                        <td><span class="label label-danger">Disconnected</span></td>
                                     {% endif %}
 
                                     <td><a  type="button"  class="btn btn-success" href="{{ url('dashboard_bus_configure',{'id':bus.getId()}) }}"><span class="glyphicon glyphicon-list-alt"></span> Edit</a></td>
@@ -100,11 +100,11 @@
                         innerHtml=innerHtml+'<tr>';
                         innerHtml=innerHtml+'<td>'+response[i].busNo+'<td>';
                         innerHtml=innerHtml+'<td>'+response[i].busName+'<td>';
-                        if(response[i].published){
-                            innerHtml=innerHtml+'<td><span class="label label-success">Published</span><td>';
+                        if(response[i].connected){
+                            innerHtml=innerHtml+'<td><span class="label label-success">Connected</span><td>';
                         }
                         else{
-                            innerHtml=innerHtml+'<td><span class="label label-success">Unpublished</span><td>';
+                            innerHtml=innerHtml+'<td><span class="label label-danger">Disconnected</span><td>';
                         }
                         innerHtml=innerHtml+'<td><a type="button" class="btn btn-success" href="PLACEHO##LDER"><span class="glyphicon glyphicon-list-alt"></span> Edit</a></td>';
 

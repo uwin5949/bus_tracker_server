@@ -226,6 +226,7 @@ class TrainController extends BaseController
             $stdTrain->endStation = $trains[$i]->getEndStation()->getName();
             $stdTrain->startTime = $trains[$i]->getStartTime()->format('H:i');
             $stdTrain->endTime = $trains[$i]->getEndTime()->format('H:i');
+            $stdTrain->connected=$trains[$i]->getUser()->getIsConnected();
             array_push($stdTrains,$stdTrain);
 
 

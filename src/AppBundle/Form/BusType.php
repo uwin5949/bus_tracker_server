@@ -37,7 +37,6 @@ class BusType extends AbstractType
 
                 }
                 ))
-            ->add('published', CheckboxType::class,array('required' => true, 'label' => false))
             ->add('ownerType', EntityType::class, array(
                 'required' => true, 'label' => 'Owner Type',
                 'class' => 'AppBundle:OwnerType',

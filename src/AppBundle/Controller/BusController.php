@@ -67,6 +67,18 @@ class BusController extends BaseController
                     return $this->redirectToRoute('dashboard_bus_configure');
                 }
 
+                try{
+                    $res = $this->get('api.node_api')->newVirtualDevice($bus_user->getUsername());
+
+                    if ($res->response == 'new virtual device created') {
+                        $result = '1';
+
+                    }
+                }
+                catch (\Exception $e){
+                    $result = '0';
+                }
+
             }
 
             $em->persist($bus);
@@ -135,7 +147,7 @@ class BusController extends BaseController
             }
 
             $stdBus->busNo=$buses[$i]->getBusNo();
-            $stdBus->published=$buses[$i]->getPublished();
+            $stdBus->connected=$buses[$i]->getUser()->getIsConnected();
             array_push($stdBuses,$stdBus);
 
 

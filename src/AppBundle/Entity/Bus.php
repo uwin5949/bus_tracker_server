@@ -71,16 +71,9 @@ class Bus
     /**
      * @var string
      *
-     * @ORM\Column(name="published", type="boolean" , nullable=false)
+     * @ORM\Column(name="isActive", type="boolean" , nullable=false)
      */
-    private $published;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="isConnected", type="boolean" , nullable=true)
-     */
-    private $isConnected;
+    private $isActive;
 
 
 
@@ -309,30 +302,6 @@ class Bus
     }
 
     /**
-     * Set isConnected
-     *
-     * @param boolean $isConnected
-     *
-     * @return Bus
-     */
-    public function setIsConnected($isConnected)
-    {
-        $this->isConnected = $isConnected;
-
-        return $this;
-    }
-
-    /**
-     * Get isConnected
-     *
-     * @return boolean
-     */
-    public function getIsConnected()
-    {
-        return $this->isConnected;
-    }
-
-    /**
      * Set lastLong
      *
      * @param string $lastLong
@@ -354,5 +323,29 @@ class Bus
     public function getLastLong()
     {
         return $this->lastLong;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return Bus
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 }

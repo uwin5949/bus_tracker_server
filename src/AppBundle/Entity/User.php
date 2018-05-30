@@ -39,12 +39,37 @@ class User extends BaseUser
      */
     private $role;
 
+
     /**
      * @var string
      *
-     * @ORM\Column(name="logged", type="boolean" , nullable=true)
+     * @ORM\Column(name="isConnected", type="boolean" , nullable=true)
      */
-    private $logged=false;
+    private $isConnected = false;
+
+    /**
+     * Set isConnected
+     *
+     * @param boolean $isConnected
+     *
+     * @return User
+     */
+    public function setIsConnected($isConnected)
+    {
+        $this->isConnected = $isConnected;
+
+        return $this;
+    }
+
+    /**
+     * Get isConnected
+     *
+     * @return boolean
+     */
+    public function getIsConnected()
+    {
+        return $this->isConnected;
+    }
 
 
 
@@ -126,27 +151,4 @@ class User extends BaseUser
         return $this->updatedAt;
     }
 
-    /**
-     * Set logged
-     *
-     * @param boolean $logged
-     *
-     * @return User
-     */
-    public function setLogged($logged)
-    {
-        $this->logged = $logged;
-
-        return $this;
-    }
-
-    /**
-     * Get logged
-     *
-     * @return boolean
-     */
-    public function getLogged()
-    {
-        return $this->logged;
-    }
 }

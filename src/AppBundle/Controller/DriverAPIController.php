@@ -28,10 +28,9 @@ class DriverAPIController extends BaseController
             $stdResponse=new \stdClass();
             $stdResponse->status=400;
             $user = $this->getRepository('User')->findOneBy(array('username'=>$username));
-            if($user != null && $user->getRole()->getMetacode()!='ROLE_ADMIN' && !$user->getLogged()) {
+            if($user != null && $user->getRole()->getMetacode()!='ROLE_ADMIN') {
                 $encoder = $this->container->get('security.password_encoder');
                 if ($encoder->isPasswordValid($user, $password)) {
-                    $user->setLogged(true);
                     $em = $this->getEntityManager();
                     $em->persist($user);
                     $em->flush();
@@ -90,37 +89,6 @@ class DriverAPIController extends BaseController
             return null;
         }
 
-
-
-    }
-
-
-    /**
-     * @Route("/driver/api/logout", name="driver_logout_api")
-     */
-    public function driverLogoutAction(Request $request){
-        if($request->getMethod() == 'POST'){
-            $username=$request->get('username');
-            $password = $request->get('password');
-            $user = null;
-            $stdResponse=new \stdClass();
-            $stdResponse->status=400;
-            $user = $this->getRepository('User')->findOneBy(array('username'=>$username));
-            if($user != null && $user->getRole()->getMetacode()!='ROLE_ADMIN' && $user->getLogged()) {
-                $encoder = $this->container->get('security.password_encoder');
-                if ($encoder->isPasswordValid($user, $password)) {
-                    $user->setLogged(false);
-                    $stdResponse->status = 200;
-                    $em = $this->getEntityManager();
-                    $em->persist($user);
-                    $em->flush();
-                }
-            }
-            return new Response(json_encode($stdResponse));
-        }
-        else{
-            return null;
-        }
 
 
     }
