@@ -46,8 +46,8 @@ class AppAPIController extends BaseController
     public function busListAPIAction(Request $request){
         if($request->getMethod() == 'POST'){
             $route_id = $request->get('route_id');
-            $route=$this->getRepository('RoadRoute')->findOneBy(array('published'=>true,'id'=>$route_id));
-                $buses=$this->getRepository('Bus')->findBy(array('route'=>$route,'published'=>true));
+            $route=$this->getRepository('RoadRoute')->findOneBy(array('id'=>$route_id));
+                $buses=$this->getRepository('Bus')->findBy(array('route'=>$route));
                 $stdBuses=array();
                 for($i=0;$i<count($buses);$i++){
                     $stdBus=new \stdClass();
