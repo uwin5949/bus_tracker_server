@@ -31,14 +31,11 @@ class DriverAPIController extends BaseController
             if($user != null && $user->getRole()->getMetacode()!='ROLE_ADMIN') {
                 $encoder = $this->container->get('security.password_encoder');
                 if ($encoder->isPasswordValid($user, $password)) {
-                    $em = $this->getEntityManager();
-                    $em->persist($user);
-                    $em->flush();
                     $driver_role = $user->getRole()->getMetacode();
                     $stdResponse->status = 200;
                     $stdResponse->driverRole = $driver_role;
                     $stdResponse->username = $user->getUsername();
-                    if ($driver_role == 'ROLE_DRIVER') {
+                    if ($driver_role == 'ROLE_DRIVER_TRAIN') {
                         $train = $this->getRepository('Train')->findOneBy(array('user' => $user));
                         $stdResponse->trainName = $train->getTrainName();
                         $stdResponse->trainId = $train->getId();
@@ -73,7 +70,7 @@ class DriverAPIController extends BaseController
                         $stdResponse->availableDays = $availableDays;
 
                     }
-                    elseif ($driver_role == 'ROLE_DRIVER_TRAIN'){
+                    elseif ($driver_role == 'ROLE_DRIVER'){
                         $bus = $this->getRepository('Bus')->findOneBy(array('user'=>$user));
                         $stdResponse->busNo = $bus->getBusNo();
                         $stdResponse->busId = $bus->getId();
