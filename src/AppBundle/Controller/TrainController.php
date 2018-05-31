@@ -50,7 +50,7 @@ class TrainController extends BaseController
         $errors = $form->getErrors();
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getEntityManager();
-
+            $train->setIsActive(true);
             if(!$isEdit){
                 $trainDrivers = $this->getRepository('User')->findBy(array('role'=>$driver_role));
                 $username = "trainuser".(string)(count($trainDrivers)+1);
