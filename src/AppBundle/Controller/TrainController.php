@@ -113,7 +113,8 @@ class TrainController extends BaseController
 
         $trains = $this->getRepository('Train')->findTrainsOfLine($trainLines[0]);
 
-
+//        var_dump($trains);
+//            exit();
         return $this->render('dashboard/trainList.html.twig', array(
             'trains' => $trains,
             'trainLines'=>$trainLines,

@@ -17,9 +17,9 @@ class TrainRepository extends \Doctrine\ORM\EntityRepository
 
         $query = $this->createQueryBuilder('t')
             ->where('t.isActive = :true')
-            ->leftJoin('t.trainLines', 'l', 'WITH', 'l.id = :myId')
+            ->andWhere(':trainLine MEMBER OF t.trainLines')
             ->setParameter('true', true)
-            ->setParameter('myId', $trainLine->getId());
+            ->setParameter('trainLine', $trainLine);
 
         $query=$query->getQuery();
 
