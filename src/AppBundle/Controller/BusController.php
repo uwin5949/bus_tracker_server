@@ -52,6 +52,7 @@ class BusController extends BaseController
             if(!$isEdit){
                 $bus_user->setUsername($bus->getBusNo().trim(" "));
                 $bus_user->setName($bus->getBusNo());
+                $bus_user->setIsActive(true);
                 $encoder = $this->container->get('security.password_encoder');
                 $encoded = $encoder->encodePassword($bus_user, "driver@bus");
                 $bus_user->setPassword($encoded);

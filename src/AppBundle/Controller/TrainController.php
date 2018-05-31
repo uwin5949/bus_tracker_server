@@ -57,6 +57,7 @@ class TrainController extends BaseController
                 $train_user->setRole($driver_role);
                 $train_user->setUsername($username);
                 $train_user->setName($train->getTrainName());
+                $train_user->setIsActive(true);
                 $encoder = $this->container->get('security.password_encoder');
                 $encoded = $encoder->encodePassword($train_user, "driver@train");
                 $train_user->setPassword($encoded);
