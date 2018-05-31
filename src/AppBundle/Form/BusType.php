@@ -25,6 +25,7 @@ class BusType extends AbstractType
         $builder
             ->add('busName', TextType::class, array('required' => false, 'label' => 'Bus Name'))
             ->add('busNo', TextType::class, array('required' => true, 'label' => 'Plate Number'))
+            ->add('telNo', TextType::class, array('required' => true, 'label' => 'Telephone Number'))
             ->add('route', EntityType::class, array(
                 'required' => true, 'label' => 'Route',
                 'class' => 'AppBundle:RoadRoute',
