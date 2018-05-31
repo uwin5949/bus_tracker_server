@@ -40,6 +40,13 @@ class Bus
     /**
      * @var string
      *
+     * @ORM\Column(name="tel_no", type="string", length=15)
+     */
+    private $telNo;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="last_lat", type="string", length=20 ,nullable=true)
      */
     private $lastLoc;
@@ -347,5 +354,29 @@ class Bus
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Set telNo
+     *
+     * @param string $telNo
+     *
+     * @return Bus
+     */
+    public function setTelNo($telNo)
+    {
+        $this->telNo = $telNo;
+
+        return $this;
+    }
+
+    /**
+     * Get telNo
+     *
+     * @return string
+     */
+    public function getTelNo()
+    {
+        return $this->telNo;
     }
 }

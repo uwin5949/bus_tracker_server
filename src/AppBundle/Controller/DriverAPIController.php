@@ -74,6 +74,7 @@ class DriverAPIController extends BaseController
                         $bus = $this->getRepository('Bus')->findOneBy(array('user'=>$user));
                         $stdResponse->busNo = $bus->getBusNo();
                         $stdResponse->busId = $bus->getId();
+                        $stdResponse->telNo = $bus->getTelNo();
                         $stdResponse->route_id = $bus->getRoute()->getId();
                         $stdResponse->routeNo = $bus->getRoute()->getRouteNo();
                         $stdResponse->routeName = $bus->getRoute()->getRouteName();
