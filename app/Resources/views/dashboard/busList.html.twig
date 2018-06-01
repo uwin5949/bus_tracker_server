@@ -95,7 +95,7 @@
                 success : function(response)
                 {
 //                    $('.loader').hide();
-                    var innerHtml='<table class="table"> <thead><tr><th>bus No</th><th>Name</th><th>Published</th><th></th></tr></thead><tbody>';
+                    var innerHtml='<table class="table"> <thead><tr><th>bus No</th><th>Name</th><th></th></tr></thead><tbody>';
                     for(var i=0;i<response.length;i++){
                         innerHtml=innerHtml+'<tr>';
                         innerHtml=innerHtml+'<td>'+response[i].busNo+'<td>';

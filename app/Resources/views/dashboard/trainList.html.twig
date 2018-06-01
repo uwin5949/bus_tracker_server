@@ -99,8 +99,14 @@
 
                     for(var i=0;i<response.length;i++){
                         innerHtml=innerHtml+'<tr>';
-                        innerHtml=innerHtml+'<td>'+response[i].name+'</td>'+'<td>'+response[i].startStation+'</td>'+'<td>'+response[i].endStation+'</td>'+'<td>'+response[i].startTime+'</td>'+'<td>'+response[i].endTime+'</td>'+'<td>'+response[i].connected+'</td>';
+                        innerHtml=innerHtml+'<td>'+response[i].name+'</td>'+'<td>'+response[i].startStation+'</td>'+'<td>'+response[i].endStation+'</td>'+'<td>'+response[i].startTime+'</td>'+'<td>'+response[i].endTime+'</td>';
 
+                        if(response[i].connected){
+                            innerHtml=innerHtml+'<td><span class="label label-success">Connected</span><td>';
+                        }
+                        else{
+                            innerHtml=innerHtml+'<td><span class="label label-danger">Disconnected</span><td>';
+                        }
                         innerHtml=innerHtml+'<td><a type="button" class="btn btn-success" href="PLACEHO##LDER"><span class="glyphicon glyphicon-list-alt"></span> Edit</a></td>';
 
                         innerHtml=innerHtml+'<tr>';
