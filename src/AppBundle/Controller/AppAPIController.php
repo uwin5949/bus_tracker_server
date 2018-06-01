@@ -58,6 +58,7 @@ class AppAPIController extends BaseController
                     $stdBus->ownerType=$buses[$i]->getOwnerType()->getMetacode();
                     $stdBus->busType=$buses[$i]->getBusType()->getMetacode();
                     $stdBus->username=$buses[$i]->getUser()->getUsername();
+                    $stdBus->connected = $buses[$i]->getUser()->getIsConnected();
                     $stdBus->route_id=$buses[$i]->getRoute()->getId();
                     array_push($stdBuses,$stdBus);
                 }
@@ -117,6 +118,7 @@ class AppAPIController extends BaseController
                 $stdTrain->startTime = $trains[$i]->getStartTime()->format('H:i');
                 $stdTrain->endTime = $trains[$i]->getEndTime()->format('H:i');
                 $stdTrain->username = $trains[$i]->getUser()->getUsername();
+                $stdTrain->connected = $trains[$i]->getUser()->getIsConnected();
                 array_push($stdTrains,$stdTrain);
 
 
