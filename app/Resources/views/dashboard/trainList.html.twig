@@ -34,6 +34,7 @@
                             <tr>
 
                                 <th>Name</th>
+                                <th>Username</th>
                                 <th>Start Station</th>
                                 <th>End Station</th>
                                 <th>Start Time</th>
@@ -46,6 +47,7 @@
                             {% for train in trains %}
                                 <tr>
                                     <td>{{ train.getTrainName() }}</td>
+                                    <td>{{ train.getUser().getUsername() }}</td>
                                     <td>{{ train.startStation.name }}</td>
                                     <td>{{ train.endStation.name }}</td>
                                     <td>{{ train.getStartTime().format('H:i') }}</td>
@@ -95,11 +97,11 @@
                 success : function(response)
                 {
 //                    $('.loader').hide();
-                    var innerHtml='<table class="table"> <thead><tr><th>Name</th><th>Start Station</th><th>End Station</th><th>Start Time</th><th>End Time</th><th>Connection Status</th><th></th></tr></thead><tbody>';
+                    var innerHtml='<table class="table"> <thead><tr><th>Name</th><th>Username</th><th>Start Station</th><th>End Station</th><th>Start Time</th><th>End Time</th><th>Connection Status</th><th></th></tr></thead><tbody>';
 
                     for(var i=0;i<response.length;i++){
                         innerHtml=innerHtml+'<tr>';
-                        innerHtml=innerHtml+'<td>'+response[i].name+'</td>'+'<td>'+response[i].startStation+'</td>'+'<td>'+response[i].endStation+'</td>'+'<td>'+response[i].startTime+'</td>'+'<td>'+response[i].endTime+'</td>';
+                        innerHtml=innerHtml+'<td>'+response[i].name+'</td>'+'<td>'+response[i].username+'</td>'+'<td>'+response[i].startStation+'</td>'+'<td>'+response[i].endStation+'</td>'+'<td>'+response[i].startTime+'</td>'+'<td>'+response[i].endTime+'</td>';
 
                         if(response[i].connected){
                             innerHtml=innerHtml+'<td><span class="label label-success">Connected</span></td>';
