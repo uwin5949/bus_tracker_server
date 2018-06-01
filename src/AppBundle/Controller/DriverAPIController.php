@@ -92,6 +92,42 @@ class DriverAPIController extends BaseController
     }
 
 
+    /**
+     * @Route("/driver/api/changePassword", name="driver_api_change_password")
+     */
+    public function changePasswordAction(Request $request){
+
+        if($request->getMethod() == 'POST'){
+            $stdResponse=new \stdClass();
+            $stdResponse->status=400;
+            $username=$request->get('username');
+            $oldpassword = $request->get('old_password');
+            $newpassword = $request->get('new_password');
+
+            $user = $this->getRepository('User')->findOneBy(array('username'=>$username));
+
+            if($user != null){
+                $encoder = $this->container->get('security.password_encoder');
+                if ($encoder->isPasswordValid($user, $oldpassword)) {
+                    $new_password = $this->get('security.password_encoder')
+                        ->encodePassword($user, $newpassword);
+                    $user->setPassword($new_password);
+
+                    $em = $this->getEntityManager();
+                    $em->persist($user);
+                    $em->flush();
+                    $stdResponse->status = 200;
+                }
+            }
+            return new Response(json_encode($stdResponse));
+        }
+        else{
+            return null;
+        }
+
+    }
+
+
 
 
 
