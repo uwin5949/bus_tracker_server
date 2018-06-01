@@ -72,9 +72,8 @@ class TrainController extends BaseController
                     );
                     return $this->redirectToRoute('dashboard_train_configure');
                 }
-
             }
-
+            $train->setIsActive(true);
             $em->persist($train);
             $em->flush();
             if($isEdit){

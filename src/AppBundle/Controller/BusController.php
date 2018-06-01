@@ -81,7 +81,7 @@ class BusController extends BaseController
                 }
 
             }
-
+            $bus->setIsActive(true);
             $em->persist($bus);
             $em->flush();
             if($isEdit){
