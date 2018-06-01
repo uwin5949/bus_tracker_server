@@ -98,13 +98,13 @@
                     var innerHtml='<table class="table"> <thead><tr><th>bus No</th><th>Name</th><th>Connection Status</th><th></th></tr></thead><tbody>';
                     for(var i=0;i<response.length;i++){
                         innerHtml=innerHtml+'<tr>';
-                        innerHtml=innerHtml+'<td>'+response[i].busNo+'<td>';
-                        innerHtml=innerHtml+'<td>'+response[i].busName+'<td>';
+                        innerHtml=innerHtml+'<td>'+response[i].busNo+'</td>';
+                        innerHtml=innerHtml+'<td>'+response[i].busName+'</td>';
                         if(response[i].connected){
-                            innerHtml=innerHtml+'<td><span class="label label-success">Connected</span><td>';
+                            innerHtml=innerHtml+'<td><span class="label label-success">Connected</span></td>';
                         }
                         else{
-                            innerHtml=innerHtml+'<td><span class="label label-danger">Disconnected</span><td>';
+                            innerHtml=innerHtml+'<td><span class="label label-danger">Disconnected</span></td>';
                         }
                         innerHtml=innerHtml+'<td><a type="button" class="btn btn-success" href="PLACEHO##LDER"><span class="glyphicon glyphicon-list-alt"></span> Edit</a></td>';
 
