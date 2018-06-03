@@ -14,6 +14,7 @@ use AppBundle\Repository\RouteRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -47,6 +48,12 @@ class BusType extends AbstractType
                 'required' => true, 'label' => 'Bus Type',
                 'class' => 'AppBundle:BusType',
                 'choice_label' => 'name'
+            ))
+            ->add('journeys', CollectionType::class, array(
+                'entry_type' => JourneyForm::class,
+                'allow_add'  => true,
+                'by_reference' => false,
+                'allow_delete' => true
             ))
             ->add('save', SubmitType::class, array('label' => 'Save'));
     }

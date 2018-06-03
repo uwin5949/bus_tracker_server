@@ -38,7 +38,7 @@ class RouteCoordinate
     /**
      * One RouteCoordinate has a RoadRoute
      *
-     * @ORM\ManyToOne(targetEntity="RoadRoute")
+     * @ORM\ManyToOne(targetEntity="RoadRoute",inversedBy="coordinates")
      * @ORM\JoinColumn(name="roadroute", referencedColumnName="id")
      */
     private $route;

@@ -11,8 +11,10 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Bus;
+use AppBundle\Entity\Journey;
 use AppBundle\Entity\User;
 use AppBundle\Form\BusType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,11 +45,28 @@ class BusController extends BaseController
         if($bus==null){
             return null;
         }
+        $tempJourney = new Journey();
+        $bus->addJourney($tempJourney);
+
+        $originalJourneys = new ArrayCollection();
+
+        foreach ($bus->getJourneys() as $journey) {
+            $originalJourneys->add($journey);
+        }
+
+
         $form = $this->createForm(BusType::class, $bus);
         $form->handleRequest($request);
         $errors = $form->getErrors();
+
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getEntityManager();
+
+            foreach ($originalJourneys as $journey) {
+                if (false === $bus->getJourneys()->contains($journey)) {
+                    $em->remove($journey);
+                }
+            }
 
             if(!$isEdit){
                 $bus_user->setUsername($bus->getBusNo().trim(" "));
@@ -81,6 +100,7 @@ class BusController extends BaseController
                 }
 
             }
+
             $bus->setIsActive(true);
             $em->persist($bus);
             $em->flush();

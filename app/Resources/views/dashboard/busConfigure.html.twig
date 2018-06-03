@@ -96,6 +96,45 @@
                             </div>
                         </div>
 
+
+                        <div id="journeys" data-prototype="{{ form_widget(form.journeys.vars.prototype)|e('html_attr') }}">
+                            <h4>Journeys</h4>
+                            <table class="table">
+                                <thead>
+                                <th>From</th>
+                                <th>Start Time</th>
+                                </thead>
+                                <tbody>
+                                <h2>
+                                {% for journey in form.journeys %}
+                                    <tr>
+                                        <td>
+                                            <div class="form-group deviceCell">
+                                                <div class="col-sm-10">
+                                                    {{ form_errors(journey.from) }}
+                                                    {{ form_widget(journey.from) }}
+                                                </div>
+                                            </div>
+
+                                        </td>
+
+                                        <td>
+                                            <div class="form-group deviceCell">
+                                                <div class="col-sm-10">
+                                                    {{ form_errors(journey.startTime) }}
+                                                    {{ form_widget(journey.startTime) }}
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+
+
                     </div>
                     <div class="box-footer" style="text-align: right">
                         <a class="btn btn-default" href="{{ url('dashboard_home') }}">Cancel</a>
@@ -110,4 +149,97 @@
 
 {% block javascripts %}
     {{ parent() }}
+
+    <script type="text/javascript">
+
+
+        var $collectionHolder;
+        var $filterPrototype;
+
+        // setup an "add a tag" link
+        var $addFilterButton = $('<button class="add_filter_link btn btn-default" style="margin-left: 10px">Add Journey</button>');
+        var $newButton = $('<div></div>').append($addFilterButton);
+
+        jQuery(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('#journeys');
+
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newButton);
+
+
+            var tbody = $('#journeys').find('tbody');
+            $(tbody).find('tr').each(function(key,tr){
+                addDeleteTag(tr);
+            });
+
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addFilterButton.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+                // add a new tag form (see next code block)
+                addTagForm($collectionHolder);
+                //set filter devices
+//                updateFilterDevices();
+            });
+        });
+
+        function addTagForm($collectionHolder) {
+            // Get the data-prototype explained earlier
+
+
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+//            var $newFormLi = $('<div></div>').append(newForm);
+
+
+            var tbody = $('#journeys').find('tbody');
+            var formGroups = $(tbody).find('.form-group');
+            var tr=$('<tr></tr>');
+            $.each(formGroups, function (index, value) {
+
+                var str = $('<td></td>').append(value.innerHTML);
+
+                $(str).find('label').remove();
+//                var td = $('<td></td>').append(str);
+                tr.append(str);
+            });
+
+            addDeleteTag(tr);
+
+            $(tbody).append(tr);
+
+        }
+        function addDeleteTag(tr) {
+            var removeLink = $('<a href="#">Delete</a>');
+            var removeTD = $('<td style="text-align: center"></td>').append(removeLink);
+            $(tr).append(removeTD);
+
+            removeLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+                // remove the li for the tag form
+                tr.remove();
+            });
+        }
+
+    </script>
+
+
 {% endblock %}

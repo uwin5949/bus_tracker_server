@@ -46,22 +46,30 @@ class AppAPIController extends BaseController
     public function busListAPIAction(Request $request){
         if($request->getMethod() == 'POST'){
             $route_id = $request->get('route_id');
+            $lowTime = $request->get('lowTime');
+            $highTime = $request->get('highTime');
             $route=$this->getRepository('RoadRoute')->findOneBy(array('id'=>$route_id));
-                $buses=$this->getRepository('Bus')->findBy(array('route'=>$route));
-                $stdBuses=array();
-                for($i=0;$i<count($buses);$i++){
-                    $stdBus=new \stdClass();
-                    $stdBus->name=$buses[$i]->getBusName();
-                    $stdBus->id=$buses[$i]->getId();
-                    $stdBus->busNo=$buses[$i]->getBusNo();
-                    $stdBus->telNo = $buses[$i]->getTelNo();
-                    $stdBus->ownerType=$buses[$i]->getOwnerType()->getMetacode();
-                    $stdBus->busType=$buses[$i]->getBusType()->getMetacode();
-                    $stdBus->username=$buses[$i]->getUser()->getUsername();
-                    $stdBus->connected = $buses[$i]->getUser()->getIsConnected();
-                    $stdBus->route_id=$buses[$i]->getRoute()->getId();
-                    array_push($stdBuses,$stdBus);
-                }
+            $lowTimeString = "1970-01-01 ".$lowTime.":00";
+            $highTimeString = "1970-01-01 ".$highTime.":00";
+            $lowTimeObj=\DateTime::createFromFormat("Y-m-d H:i:s", $lowTimeString);
+            $highTimeObj=\DateTime::createFromFormat("Y-m-d H:i:s", $highTimeString);
+            $journeys = $this->getRepository('Journey')->getJourneysByTime($route,$lowTimeObj,$highTimeObj);
+            $stdBuses=array();
+            for($i=0;$i<count($journeys);$i++){
+                $stdBus=new \stdClass();
+                $stdBus->name=$journeys[$i]->getBus()->getBusName();
+                $stdBus->id=$journeys[$i]->getBus()->getId();
+                $stdBus->busNo=$journeys[$i]->getBus()->getBusNo();
+                $stdBus->telNo = $journeys[$i]->getBus()->getTelNo();
+                $stdBus->ownerType=$journeys[$i]->getBus()->getOwnerType()->getMetacode();
+                $stdBus->busType=$journeys[$i]->getBus()->getBusType()->getMetacode();
+                $stdBus->username=$journeys[$i]->getBus()->getUser()->getUsername();
+                $stdBus->connected = $journeys[$i]->getBus()->getUser()->getIsConnected();
+                $stdBus->route_id=$journeys[$i]->getBus()->getRoute()->getId();
+                $stdBus->from = $journeys[$i]->getFrom()->getName();
+                $stdBus->startTime = $journeys[$i]->getStartTime()->format('H:i');
+                array_push($stdBuses,$stdBus);
+            }
 
 
             return new Response(json_encode($stdBuses));

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -101,6 +102,11 @@ class Bus
     private $ownerType;
 
 
+    /**
+     * One Bus has Many Journeys.
+     * @ORM\OneToMany(targetEntity="Journey", mappedBy="bus",cascade={"all"})
+     */
+    private $journeys;
 
 
 
@@ -237,30 +243,6 @@ class Bus
 
 
     /**
-     * Set published
-     *
-     * @param boolean $published
-     *
-     * @return Bus
-     */
-    public function setPublished($published)
-    {
-        $this->published = $published;
-
-        return $this;
-    }
-
-    /**
-     * Get published
-     *
-     * @return boolean
-     */
-    public function getPublished()
-    {
-        return $this->published;
-    }
-
-    /**
      * Set busType
      *
      * @param \AppBundle\Entity\BusType $busType
@@ -378,5 +360,48 @@ class Bus
     public function getTelNo()
     {
         return $this->telNo;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->journeys = new ArrayCollection();
+    }
+
+
+    /**
+     * Add journey
+     *
+     * @param \AppBundle\Entity\Journey $journey
+     *
+     * @return Bus
+     */
+    public function addJourney(\AppBundle\Entity\Journey $journey)
+    {
+        $journey->setBus($this);
+        $this->journeys[] = $journey;
+
+        return $this;
+    }
+
+    /**
+     * Remove journey
+     *
+     * @param \AppBundle\Entity\Journey $journey
+     */
+    public function removeJourney(\AppBundle\Entity\Journey $journey)
+    {
+        $this->journeys->removeElement($journey);
+    }
+
+    /**
+     * Get journeys
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getJourneys()
+    {
+        return $this->journeys;
     }
 }
