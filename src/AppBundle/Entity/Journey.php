@@ -24,7 +24,7 @@ class Journey
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bus")
+     * @ORM\ManyToOne(targetEntity="Bus",inversedBy="journeys")
      * @ORM\JoinColumn(name="bus", referencedColumnName="id")
      */
     private $bus;
@@ -32,7 +32,7 @@ class Journey
 
     /**
      * @ORM\ManyToOne(targetEntity="City")
-     * @ORM\JoinColumn(name="from", referencedColumnName="id")
+     * @ORM\JoinColumn(name="startCity", referencedColumnName="id")
      */
     private $from;
 

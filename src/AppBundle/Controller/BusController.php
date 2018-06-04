@@ -51,6 +51,7 @@ class BusController extends BaseController
         $originalJourneys = new ArrayCollection();
 
         foreach ($bus->getJourneys() as $journey) {
+
             $originalJourneys->add($journey);
         }
 
@@ -63,10 +64,20 @@ class BusController extends BaseController
             $em = $this->getEntityManager();
 
             foreach ($originalJourneys as $journey) {
+
                 if (false === $bus->getJourneys()->contains($journey)) {
                     $em->remove($journey);
                 }
             }
+//            $journeys = $this->getRepository('Journey')->findAll();
+//            $count=$journeys[count($journeys)-1]->getId();
+//            foreach ($bus->getJourneys() as $journey) {
+//
+//                if($journey->getId() == null){
+//                    $journey->setId($count+1);
+//                    $count++;
+//                }
+//            }
 
             if(!$isEdit){
                 $bus_user->setUsername($bus->getBusNo().trim(" "));
@@ -103,6 +114,9 @@ class BusController extends BaseController
 
             $bus->setIsActive(true);
             $em->persist($bus);
+//            foreach ($originalJourneys as $journey) {
+//                $em->persist($journey);
+//            }
             $em->flush();
             if($isEdit){
                 $this->addFlash(

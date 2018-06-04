@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BusType extends AbstractType
 {
@@ -57,4 +58,18 @@ class BusType extends AbstractType
             ))
             ->add('save', SubmitType::class, array('label' => 'Save'));
     }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'AppBundle\Entity\Bus',
+
+        ));
+    }
+    public function getName()
+    {
+        return 'app_bundle_bus_form';
+    }
+
+
 }

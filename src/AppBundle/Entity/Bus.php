@@ -109,8 +109,6 @@ class Bus
     private $journeys;
 
 
-
-
     /**
      * Get id
      *
